@@ -2,7 +2,11 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 def create_pipe(model_path:str, cache_model:bool=False, path_to_save:str=""):
     """
-    Download the model from hugging face and return a pipeline object
+    Either:
+        - load the model locally or
+        - download the model from hugging face 
+
+    Then return a pipeline object
     """
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(model_path)
