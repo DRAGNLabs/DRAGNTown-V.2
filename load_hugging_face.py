@@ -4,9 +4,8 @@ def create_pipe(model_path:str, cache_model:bool=False, path_to_save:str=""):
     """
     Either:
         - load the model locally or
-        - download the model from hugging face 
-
-    Then return a pipeline object
+        - download the model from hugging face, and optionally cache the downloaded model;
+    Return a pipeline object
     """
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(model_path)
@@ -20,14 +19,34 @@ def create_pipe(model_path:str, cache_model:bool=False, path_to_save:str=""):
     return pipe
 
 
+def query_lm(prompt: list[str] = [""], pipe=None, model_path: str = None) -> list[str]:
+    """
+    Queries the language model with a given prompt and returns the generated text.
+
+    Args:
+        prompt (list[str], optional): The prompt to query the language model with. Defaults to [""].
+        pipe (transformers.pipelines.text_generation.TextGenerationPipeline object, optional): The language model pipeline. If not provided, it will be created using the model_path. Defaults to None.
+        model_path (str, optional): The path to the language model. Required if pipe is not provided. Defaults to None.
+        
+    Returns:
+        list[str]: The generated text from the language model.
+    """
+    # Check if prompt is empty
+    if prompt == [""]:
+        return [""]
+    
+    # Check if pipe is not provided and model_path is not provided
+    if pipe == None:
+        if model_path == None:
+            raise Exception("Either pipe or model_path must be specified")
+        pipe = create_pipe(model_path)
+    
+    # Generate response using the language model pipeline
+    generated_response: list[list[dict[str:str]]] = pipe(prompt)
+    
+    # Extract the generated text from the response and return list of strings
+    return [generated_response[i][0]['generated_text'] for i in range(len(prompt))]
+
 # Sample Usage
-model_path = "distilgpt2"
-pipe = create_pipe(model_path=model_path)# cache_model=True, path_to_save="models/"+model_name)
 prompts: list[str] = ["Hello, my name is", "In 1776, the United States of America"]
-generated_response: list[list[dict[str:str]]] = pipe(prompts)
-
-# print((generated_response))
-# print((generated_response[0][0]['generated_text']))
-
-print([generated_response[i][0]['generated_text'] for i in range(len(prompts))])
-
+print(query_lm(prompt=prompts))
