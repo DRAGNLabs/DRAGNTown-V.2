@@ -48,5 +48,6 @@ def query_lm(prompt: list[str] = [""], pipe=None, model_path: str = None) -> lis
     return [generated_response[i][0]['generated_text'] for i in range(len(prompt))]
 
 # Sample Usage
+model_path = "distilgpt2"
 prompts: list[str] = ["Hello, my name is", "In 1776, the United States of America"]
-print(query_lm(prompt=prompts))
+print(query_lm(prompt=prompts, model_path=model_path))
