@@ -9,7 +9,7 @@ model_path = "EleutherAI/gpt-neo-1.3B"
 #model_path = "HuggingFaceH4/zephyr-7b-beta"
 #model_path = "elinas/llama-7b-hf-transformers-4.29"
 #model_path = "xglm"
-token = "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"
+token = "<YOUR_TOKEN_HERE>"
 print(f"This is the model path: {model_path}\n")
 
 
