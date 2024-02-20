@@ -292,5 +292,5 @@ ue_bank = {
 }
 ue_dict = ue_bank
 ue_dict['item'] = item
-item = client.run("call_llm", "call_llm", unreal_input=ue_dict, model_path=model_path, api_token=token)
+item = client.run("call_lm", "call_lm", unreal_input=ue_dict, model_path=model_path, api_token=token)
 print(item)
